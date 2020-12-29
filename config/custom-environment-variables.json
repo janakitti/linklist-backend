@@ -1,0 +1,4 @@
+{
+    "jwtPrivateKey" : "linklist_jwtPrivateKey",
+    "db": "linklist_db"
+}
