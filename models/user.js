@@ -22,6 +22,30 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 5,
         maxlength: 1024
+    },
+    lists: {
+        type: [ new mongoose.Schema({
+            name: {
+                type: String,
+                required: true,
+                minlength: 1,
+                maxlength: 15
+            },
+            links: [ new mongoose.Schema({
+                label: {
+                    type: String,
+                    required: true,
+                    minlength: 1,
+                    maxlength: 15
+                },
+                url: {
+                    type: String,
+                    required: true,
+                    minlength: 5,
+                    maxlength: 1000
+                }
+            })]
+        })]
     }
 });
 
