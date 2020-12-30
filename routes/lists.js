@@ -13,6 +13,8 @@ router.post('/', auth, async (req, res) => {
     newList = await newList.save();
 
     let user = await User.findById(req.user._id);
+    if (!user) return res.status(400).send('Attempted to create new list under nonexistent user.');
+
     user.lists.push(newList._id);
     await user.save();
 
