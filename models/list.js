@@ -10,7 +10,7 @@ const listSchema = new mongoose.Schema({
         maxlength: 15
     },
     links: {
-        type: [ linkSchema ]
+        type: [ mongoose.Schema.Types.ObjectId ]
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId

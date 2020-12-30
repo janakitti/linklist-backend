@@ -30,7 +30,7 @@ router.put('/:id', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
  
-    const list = await List.findByIdAndUpdate(req.params.id, { owner: req.user._id, name: req.body.name }, {
+    const list = await List.findByIdAndUpdate(req.params.id, { name: req.body.name }, {
         new: true
     });
     if (!list) return res.status(404).send(`List ${req.params.id} not found.`);

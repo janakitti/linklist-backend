@@ -13,6 +13,9 @@ const linkSchema = new mongoose.Schema({
         required: true,
         minlength: 5,
         maxlength: 1000
+    },
+    list: {
+        type: mongoose.Schema.Types.ObjectId
     }
 });
 
@@ -28,4 +31,4 @@ function validateLink(link) {
 
 exports.linkSchema = linkSchema;
 exports.Link = Link;
-exports.validateLink = validateLink;
+exports.validate = validateLink;
