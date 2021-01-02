@@ -5,8 +5,8 @@ const app = express();
 //     res.header('Access-Control-Allow-Origin', '*');
 //     next();
 //   });
-app.use(cors());
-app.options('*', cors());
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+// app.options('*', cors());
 
 require('./startup/routes')(app);
 require('./startup/db')();
