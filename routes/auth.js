@@ -21,7 +21,14 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    res.send(token);
+    res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+    res.send({ token });
+
+    
 });
 
 function validate(req) {
