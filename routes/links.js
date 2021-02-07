@@ -98,7 +98,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(link);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [cookieParser, auth], async (req, res) => {
   let link = await Link.findById(req.params.id);
   if (!link) return res.status(404).send(`Link ${req.params.id} not found.`);
 
