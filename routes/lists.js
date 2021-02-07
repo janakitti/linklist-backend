@@ -8,7 +8,7 @@ const cookieParser = require("cookie-parser")();
 
 router.get("/", [cookieParser, auth], async (req, res) => {
   const lists = await List.find({ owner: req.user._id });
-  if (!lists) return res.status(400).send("UH OH");
+  if (!lists) return res.status(400).send("Attempted to get nonexistent list.");
   res.send(lists);
 });
 
