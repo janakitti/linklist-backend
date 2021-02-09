@@ -13,7 +13,7 @@ require("./startup/db")();
 require("./startup/config")();
 
 const port = process.env.PORT || 4000;
-const server = app.listen(port, () =>
+const server = app.listen(port, "0.0.0.0", () =>
   console.log(`Listening on port ${port}...`)
 );
 
