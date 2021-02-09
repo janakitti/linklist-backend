@@ -6,9 +6,13 @@ const router = express.Router();
 const cookieParser = require("cookie-parser")();
 
 router.get("/:id", async (req, res) => {
-  let publicList = await PublicList.findById(req.params.id);
-  if (!publicList) return res.status(404).send("List not found.");
-  res.send(publicList);
+  try {
+    let publicList = await PublicList.findById(req.params.id);
+    if (!publicList) return res.status(404).send("List not found.");
+    res.send(publicList);
+  } catch (err) {
+    res.status(404).send("List not found.");
+  }
 });
 
 router.post("/", [cookieParser, auth], async (req, res) => {
