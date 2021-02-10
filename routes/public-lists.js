@@ -18,8 +18,8 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/:id", [cookieParser, auth], async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   let list = await List.findById(req.params.id);
   if (!list)
@@ -58,16 +58,16 @@ router.post("/:id", [cookieParser, auth], async (req, res) => {
 });
 
 router.put("/:id", [cookieParser, auth], async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
 
   let list = await List.findById(req.params.id);
   if (!list)
     return res.status(400).send("Attempted to publish nonexistent list.");
 
-  let publicList = await PublicList.findById(req.params.id);
+  let publicList = await PublicList.findById(list.publicListId);
   if (!publicList)
-    return res.status(404).send(`Public list ${req.params.id} not found.`);
+    return res.status(404).send(`Public list ${list.publicListId} not found.`);
 
   if (req.user._id != publicList.owner)
     return res.status(400).send("Attempted to update an unowned public list.");
