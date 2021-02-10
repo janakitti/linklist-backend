@@ -29,6 +29,9 @@ const publicListSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  privateListId: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 });
 
 const PublicList = mongoose.model("PublicList", publicListSchema);

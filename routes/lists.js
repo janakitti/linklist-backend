@@ -20,6 +20,8 @@ router.post("/", [cookieParser, auth], async (req, res) => {
     name: req.body.name,
     links: [],
     owner: req.user._id,
+    publicListId: undefined,
+    isPublished: false,
   });
   newList = await newList.save();
 
@@ -41,7 +43,7 @@ router.put("/:id", auth, async (req, res) => {
 
   const list = await List.findByIdAndUpdate(
     req.params.id,
-    { name: req.body.name },
+    { name: req.body.name, isPublished: false },
     {
       new: true,
     }
