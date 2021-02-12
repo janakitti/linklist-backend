@@ -54,7 +54,10 @@ router.post("/:id", [cookieParser, auth], async (req, res) => {
 
   await list.save();
 
-  res.send(newPublicList);
+  res.send({
+    privateList: list,
+    publicList: newPublicList,
+  });
 });
 
 router.put("/:id", [cookieParser, auth], async (req, res) => {
@@ -81,7 +84,10 @@ router.put("/:id", [cookieParser, auth], async (req, res) => {
 
   publicList = await publicList.save();
 
-  res.send(publicList);
+  res.send({
+    privateList: list,
+    publicList: publicList,
+  });
 });
 
 router.delete("/:id", [cookieParser, auth], async (req, res) => {
