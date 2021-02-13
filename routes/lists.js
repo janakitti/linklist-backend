@@ -1,5 +1,6 @@
 const auth = require("../middleware/auth");
 const { List, validate } = require("../models/list");
+const { PublicList } = require("../models/public-list");
 const { User } = require("../models/user");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -53,7 +54,7 @@ router.put("/:id", auth, async (req, res) => {
   res.send(list);
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id", [cookieParser, auth], async (req, res) => {
   const list = await List.findOne({ _id: req.params.id, owner: req.user._id });
   if (!list) return res.status(404).send(`List ${req.params.id} not found.`);
 
@@ -61,9 +62,19 @@ router.delete("/:id", auth, async (req, res) => {
   if (!user)
     return res
       .status(400)
-      .send("Attempted to create new list under nonexistent user.");
+      .send("Attempted to delete new list beloning to nonexistent user.");
 
   const index = user.lists.indexOf(req.params.id);
+
+  if (list.publicListId) {
+    const publicList = await PublicList.findById(list.publicListId);
+    if (!publicList)
+      return res
+        .status(404)
+        .send(`Public list ${list.publicListId} not found.`);
+    await publicList.remove();
+  }
+
   user.lists.splice(index, 1);
 
   await user.save();
