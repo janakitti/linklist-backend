@@ -1,6 +1,7 @@
 const auth = require("../middleware/auth");
 const { List, validate } = require("../models/list");
 const { PublicList } = require("../models/public-list");
+const { Link } = require("../models/link");
 const { User } = require("../models/user");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -73,6 +74,10 @@ router.delete("/:id", [cookieParser, auth], async (req, res) => {
         .status(404)
         .send(`Public list ${list.publicListId} not found.`);
     await publicList.remove();
+  }
+
+  for (const link of list.links) {
+    await Link.findByIdAndDelete(link);
   }
 
   user.lists.splice(index, 1);
