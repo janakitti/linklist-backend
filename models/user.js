@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
     minlength: 6,
     maxlength: 1024,
   },
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   lists: {
     type: [mongoose.Schema.Types.ObjectId],
   },
