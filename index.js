@@ -12,6 +12,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 require("./startup/routes")(app);
 require("./startup/db")();
 require("./startup/config")();
+require("./startup/prod")(app);
 
 const port = process.env.PORT || 4000;
 const server = app.listen(port, "0.0.0.0", () =>
