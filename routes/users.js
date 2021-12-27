@@ -29,32 +29,32 @@ router.post("/", async (req, res) => {
 
   const token = user.generateAuthToken();
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: process.env.MAIL_USERNAME,
-      pass: process.env.MAIL_PASSWORD,
-      clientId: process.env.OAUTH_CLIENTID,
-      clientSecret: process.env.OAUTH_CLIENT_SECRET,
-      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-    },
-  });
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     type: "OAuth2",
+  //     user: process.env.MAIL_USERNAME,
+  //     pass: process.env.MAIL_PASSWORD,
+  //     clientId: process.env.OAUTH_CLIENTID,
+  //     clientSecret: process.env.OAUTH_CLIENT_SECRET,
+  //     refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+  //   },
+  // });
 
-  const mailOptions = {
-    from: process.env.MAIL_USERNAME,
-    to: user.email,
-    subject: "Welcome to Linklist!",
-    html: `Please <a href="">click here</a> to verify your email.`,
-  };
+  // const mailOptions = {
+  //   from: process.env.MAIL_USERNAME,
+  //   to: user.email,
+  //   subject: "Welcome to Linklist!",
+  //   html: `Please <a href="">click here</a> to verify your email.`,
+  // };
 
-  transporter.sendMail(mailOptions, function (err, data) {
-    if (err) {
-      console.log("Error " + err);
-    } else {
-      console.log("Confirmation email sent successfuly.");
-    }
-  });
+  // transporter.sendMail(mailOptions, function (err, data) {
+  //   if (err) {
+  //     console.log("Error " + err);
+  //   } else {
+  //     console.log("Confirmation email sent successfuly.");
+  //   }
+  // });
 
   res
     .header("x-auth-token", token)
