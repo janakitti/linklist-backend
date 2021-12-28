@@ -26,6 +26,7 @@
     "nodemailer": "^6.5.0"
   },
   "devDependencies": {
+    "eslint": "^8.5.0",
     "jest": "^26.6.3",
     "jshint": "^2.12.0",
     "supertest": "^6.0.1"
