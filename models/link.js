@@ -1,18 +1,19 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { labelMin, labelMax, urlMin, urlMax } = require("../utils/constants.js");
 
 const linkSchema = new mongoose.Schema({
     label: {
         type: String,
         required: true,
-        minlength: 1,
-        maxlength: 15
+        minlength: labelMin,
+        maxlength: labelMax
     },
     url: {
         type: String,
         required: true,
-        minlength: 5,
-        maxlength: 1000
+        minlength: urlMin,
+        maxlength: urlMax
     },
     list: {
         type: mongoose.Schema.Types.ObjectId
@@ -23,8 +24,8 @@ const Link = mongoose.model('Link', linkSchema);
 
 function validateLink(link) {
     const schema = Joi.object({
-        label: Joi.string().min(3).max(15).required(),
-        url: Joi.string().min(5).max(1000).required(),
+        label: Joi.string().min(labelMin).max(labelMax).required(),
+        url: Joi.string().min(urlMin).max(urlMax).required(),
     });
     return schema.validate(link);
 }

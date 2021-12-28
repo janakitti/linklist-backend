@@ -2,27 +2,27 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { listSchema } = require("./list");
+const { fieldMin, fieldMax, usernameMin, usernameMax, passwordMin, passwordMax } = require("../utils/constants.js");
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    minlength: 3,
-    maxlength: 15,
+    minlength: usernameMin,
+    maxlength: usernameMax,
   },
   email: {
     type: String,
     required: true,
-    minlength: 5,
-    maxlength: 255,
+    minlength: fieldMin,
+    maxlength: fieldMax,
     unique: true,
   },
   password: {
     type: String,
     required: true,
-    minlength: 6,
-    maxlength: 1024,
+    minlength: passwordMin,
+    maxlength: passwordMax,
   },
   isVerified: {
     type: Boolean,
@@ -43,9 +43,9 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
   const schema = Joi.object({
-    username: Joi.string().min(3).max(15).required(),
-    email: Joi.string().min(5).max(255).email().required(),
-    password: Joi.string().min(5).max(255).required(),
+    username: Joi.string().min(usernameMin).max(usernameMax).required(),
+    email: Joi.string().min(fieldMin).max(fieldMax).email().required(),
+    password: Joi.string().min(fieldMin).max(fieldMax).required(),
   });
   return schema.validate(user);
 }

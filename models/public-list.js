@@ -1,12 +1,13 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const { listMin, listMax, labelMin, labelMax, urlMin, urlMax } = require("../utils/constants.js");
 
 const publicListSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 15,
+    minlength: listMin,
+    maxlength: listMax,
   },
   links: {
     type: [
@@ -14,14 +15,14 @@ const publicListSchema = new mongoose.Schema({
         label: {
           type: String,
           required: true,
-          minlength: 1,
-          maxlength: 15,
+          minlength: labelMin,
+          maxlength: labelMax,
         },
         url: {
           type: String,
           required: true,
-          minlength: 5,
-          maxlength: 1000,
+          minlength: urlMin,
+          maxlength: urlMax,
         },
       },
     ],
@@ -38,11 +39,11 @@ const PublicList = mongoose.model("PublicList", publicListSchema);
 
 function validatePublicList(publicList) {
   const schema = Joi.object({
-    name: Joi.string().min(1).max(15).required(),
+    name: Joi.string().min(listMin).max(listMax).required(),
     links: Joi.array().items(
       Joi.object({
-        label: Joi.string().min(3).max(15).required(),
-        url: Joi.string().min(5).max(1000).required(),
+        label: Joi.string().min(labelMin).max(labelMax).required(),
+        url: Joi.string().min(urlMin).max(urlMax).required(),
       })
     ),
   });
