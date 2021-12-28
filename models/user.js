@@ -2,7 +2,14 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { fieldMin, fieldMax, usernameMin, usernameMax, passwordMin, passwordMax } = require("../utils/constants.js");
+const {
+  fieldMin,
+  fieldMax,
+  usernameMin,
+  usernameMax,
+  passwordMin,
+  passwordMax,
+} = require("../utils/constants.js");
 
 const userSchema = new mongoose.Schema({
   username: {

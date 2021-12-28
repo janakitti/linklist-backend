@@ -1,6 +1,13 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
-const { listMin, listMax, labelMin, labelMax, urlMin, urlMax } = require("../utils/constants.js");
+const {
+  listMin,
+  listMax,
+  labelMin,
+  labelMax,
+  urlMin,
+  urlMax,
+} = require("../utils/constants.js");
 
 const publicListSchema = new mongoose.Schema({
   name: {

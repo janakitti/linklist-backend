@@ -4,7 +4,12 @@ const { User } = require("../models/user");
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
-const { fieldMin, fieldMax, passwordMin, passwordMax } = require("../utils/constants.js");
+const {
+  fieldMin,
+  fieldMax,
+  passwordMin,
+  passwordMax,
+} = require("../utils/constants.js");
 
 router.post("/", async (req, res) => {
   // Validate request
