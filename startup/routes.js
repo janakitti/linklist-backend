@@ -7,7 +7,7 @@ const auth = require("../routes/auth");
 const cors = require("cors");
 
 module.exports = function (app) {
-  app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+  app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
   app.use(express.json());
   app.use("/api/users", users);
   app.use("/api/lists", lists);
