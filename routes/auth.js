@@ -28,8 +28,8 @@ router.post("/", async (req, res) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    // sameSite: "none",
-    // secure: true,
+    sameSite: "none",
+    secure: true,
   });
   res.send({ token });
 });
