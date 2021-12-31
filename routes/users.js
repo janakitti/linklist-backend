@@ -6,6 +6,7 @@ const express = require("express");
 const router = express.Router();
 const cookieParser = require("cookie-parser")();
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
 
 router.get("/me", [cookieParser, auth], async (req, res) => {
   // Select all but the password to send back in response
@@ -30,18 +31,43 @@ router.post("/", async (req, res) => {
 
   const token = user.generateAuthToken();
 
+  const OAuth2 = google.auth.OAuth2;
+
+  // Connect Linklist application to Google OAuth playground
+  const oauth2Client = new OAuth2(
+    process.env.OAUTH_CLIENTID,
+    process.env.OAUTH_CLIENT_SECRET,
+    "https://developers.google.com/oauthplayground"
+  );
+
+  // Renew access token using refresh token
+  oauth2Client.setCredentials({
+    refresh_token: process.env.OAUTH_REFRESH_TOKEN,
+  });
+
+  const accessToken = await new Promise((resolve, reject) => {
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) {
+        reject("Failed to create access token " + err);
+      }
+      resolve(token);
+    });
+  });
+
+  // Authenticate as owner of the Gmail account
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
       type: "OAuth2",
       user: process.env.MAIL_USERNAME,
-      pass: process.env.MAIL_PASSWORD,
+      accessToken,
       clientId: process.env.OAUTH_CLIENTID,
       clientSecret: process.env.OAUTH_CLIENT_SECRET,
       refreshToken: process.env.OAUTH_REFRESH_TOKEN,
     },
   });
 
+  // Create email
   const mailOptions = {
     from: process.env.MAIL_USERNAME,
     to: user.email,
