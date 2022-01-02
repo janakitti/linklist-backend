@@ -24,6 +24,9 @@ router.post("/", async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send("Invalid email or password.");
 
+  console.log(user.isVerified);
+  if (!user.isVerified) return res.status(400).send("Account not verified.");
+
   const token = user.generateAuthToken();
 
   res.cookie("token", token, {

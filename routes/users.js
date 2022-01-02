@@ -8,6 +8,18 @@ const cookieParser = require("cookie-parser")();
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 
+const generateHash = (s) => {
+  var hash = 0,
+    i,
+    chr;
+  if (s.length === 0) return hash;
+  for (i = 0; i < s.length; i++) {
+    chr = s.charCodeAt(i);
+    hash = (hash << 5) - hash + chr;
+  }
+  return hash;
+};
+
 router.get("/me", [cookieParser, auth], async (req, res) => {
   // Select all but the password to send back in response
   const user = await User.findById(req.user._id).select("-password");
@@ -23,11 +35,17 @@ router.post("/", async (req, res) => {
   let user = await User.findOne({ email: req.body.email });
   if (user) return res.status(400).send("User already registered.");
 
+  let verificationCode = generateHash(req.body.email);
+
   // Create new user object
-  user = new User(_.pick(req.body, ["username", "email", "password"]));
+  user = new User({
+    ..._.pick(req.body, ["username", "email", "password"]),
+    verificationCode,
+  });
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
+  console.log(user);
 
   const token = user.generateAuthToken();
 
@@ -72,7 +90,7 @@ router.post("/", async (req, res) => {
     from: process.env.MAIL_USERNAME,
     to: user.email,
     subject: "Welcome to Linklist!",
-    html: `Please <a href="">click here</a> to verify your email.`,
+    html: `Please <a href="${process.env.ORIGIN}/verify?id=${verificationCode}">click here</a> to verify your email.`,
   };
 
   transporter.sendMail(mailOptions, function (err, data) {
@@ -86,6 +104,18 @@ router.post("/", async (req, res) => {
   res
     .header("x-auth-token", token)
     .send(_.pick(user, ["_id", "username", "email"]));
+});
+
+router.post("/verify/:verificationCode", async (req, res) => {
+  const { verificationCode } = req.params;
+  const user = await User.findOne({ verificationCode });
+  if (user) {
+    user.isVerified = true;
+    await user.save();
+    res.send(user);
+  } else {
+    res.status(400).send("Invalid verification code.");
+  }
 });
 
 module.exports = router;

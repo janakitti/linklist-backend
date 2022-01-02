@@ -36,6 +36,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: false,
   },
+  verificationCode: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   lists: {
     type: [mongoose.Schema.Types.ObjectId],
   },
